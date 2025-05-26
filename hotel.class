@@ -1,0 +1,72 @@
+package hotel;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Hotel {
+    private String nombre;
+    private List<Habitacion> habitaciones;
+
+    public Hotel(String nombre) {
+        this.nombre = nombre;
+        this.habitaciones = new ArrayList<Habitacion>();
+    }
+
+    public void agregarHabitacion(Habitacion habitacion) {
+        habitaciones.add(habitacion);
+    }
+
+    public Habitacion buscarHabitacionDisponible(String tipoBuscado) {
+        for (int i = 0; i < habitaciones.size(); i++) {
+            Habitacion h = habitaciones.get(i);
+            if (compararTipos(h.getTipo(), tipoBuscado) && h.estaDisponible()) {
+                return h;
+            }
+        }
+        return null;
+    }
+
+    public int contarHabitacionesDisponibles(String tipoBuscado) {
+        int contador = 0;
+        for (int i = 0; i < habitaciones.size(); i++) {
+            Habitacion h = habitaciones.get(i);
+            if (compararTipos(h.getTipo(), tipoBuscado) && h.estaDisponible()) {
+                contador++;
+            }
+        }
+        return contador;
+    }
+
+    public static boolean compararTipos(String tipo1, String tipo2) {
+        if (tipo1 == null || tipo2 == null) {
+            return false;
+        }
+
+        if (tipo1.length() != tipo2.length()) {
+            return false;
+        }
+
+        for (int i = 0; i < tipo1.length(); i++) {
+            char letra1 = tipo1.charAt(i);
+            char letra2 = tipo2.charAt(i);
+
+            if (letra1 >= 'A' && letra1 <= 'Z') {
+                letra1 = (char)(letra1 + 32);
+            }
+
+            if (letra2 >= 'A' && letra2 <= 'Z') {
+                letra2 = (char)(letra2 + 32);
+            }
+
+            if (letra1 != letra2) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public List<Habitacion> getHabitaciones() {
+        return habitaciones;
+    }
+}
