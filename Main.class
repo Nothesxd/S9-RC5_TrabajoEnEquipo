@@ -1,0 +1,82 @@
+package hotel;
+
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Hotel hotel = new Hotel("Hotel JCH");
+
+        hotel.agregarHabitacion(new Habitacion(101, "Simple"));
+        hotel.agregarHabitacion(new Habitacion(102, "Simple"));
+        hotel.agregarHabitacion(new Habitacion(103, "Simple"));
+
+        hotel.agregarHabitacion(new Habitacion(201, "Doble"));
+        hotel.agregarHabitacion(new Habitacion(202, "Doble"));
+
+        hotel.agregarHabitacion(new Habitacion(301, "Suite"));
+        hotel.agregarHabitacion(new Habitacion(302, "Suite"));
+
+        System.out.println(" Bienvenido al sistema de reservas del Hotel JCH ");
+
+        while (true) {
+            System.out.println("\nMenú:");
+            System.out.println("1. Registrar una nueva reserva");
+            System.out.println("2. Salir del sistema");
+            System.out.print("Seleccione una opción: ");
+            String opcion = scanner.nextLine();
+
+            switch (opcion) {
+                case "1":
+                    System.out.println("\nEstado actual de habitaciones:");
+                    for (Habitacion h : hotel.getHabitaciones()) {
+                        System.out.println(h);
+                    }
+
+                    System.out.print("\nIngrese su nombre: ");
+                    String cliente = scanner.nextLine();
+
+                    System.out.print("Ingrese el tipo de habitación que desea reservar (Simple / Doble / Suite): ");
+                    String tipoBuscado = scanner.nextLine();
+
+                    Habitacion disponible = hotel.buscarHabitacionDisponible(tipoBuscado);
+                    int disponibles = hotel.contarHabitacionesDisponibles(tipoBuscado);
+
+                    System.out.println("\n============================================");
+                    System.out.println("Consultando disponibilidad para: " + tipoBuscado);
+                    System.out.println("============================================");
+                    System.out.println("Número de habitaciones disponibles: " + disponibles);
+
+                    if (disponible != null) {
+                        System.out.println("¡Habitación disponible encontrada!");
+                        System.out.println("Número: " + disponible.getNumero());
+                        System.out.println("Tipo: " + disponible.getTipo());
+                        System.out.println("Estado: Disponible");
+
+                        Reserva reserva = new Reserva(cliente, disponible);
+
+                        System.out.println("\nReserva creada exitosamente:");
+                        System.out.println(reserva);
+                    } else {
+                        System.out.println("Lo sentimos, no hay habitaciones disponibles del tipo solicitado.");
+                    }
+
+                    System.out.println("============================================");
+                    break;
+
+                case "2":
+                    System.out.println("\n Estado final de habitaciones ");
+                    for (Habitacion h : hotel.getHabitaciones()) {
+                        System.out.println(h);
+                    }
+                    System.out.println("\nGracias por usar el sistema de reservas del Hotel JCH.");
+                    scanner.close();
+                    return;
+
+                default:
+                    System.out.println("Opción no válida. Por favor ingrese 1 o 2.");
+                    break;
+            }
+        }
+    }
+}
